@@ -1,0 +1,4501 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>NorthMail</title>
+
+<script>
+				document.addEventListener("keydown", function (event) {
+					// CTRL+U, CTRL+S, CTRL+Shift+I, CTRL+Shift+J, CTRL+H, F12 ko blocked
+					if (
+						(event.ctrlKey && (event.key === "u" || event.key === "s" || event.key === "i" || event.key === "j" || event.key === "h")) || 
+						event.key === "F12"
+					) {
+						event.preventDefault();
+						alert("View source is disabled!");
+					}
+				});
+		
+				
+				document.addEventListener("contextmenu", function (event) {
+					event.preventDefault();
+					alert("Right-click is disabled!");
+				});
+		
+				
+			
+			</script>
+<style>
+
+/* =========================================================
+   RESET
+   ========================================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    width: 100%;
+    height: 100%;
+
+    font-family:
+        Inter,
+        ui-sans-serif,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
+
+    color: #202124;
+
+    background: #f6f7f9;
+}
+
+button,
+input,
+textarea {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
+
+svg {
+    display: block;
+}
+
+
+/* =========================================================
+   APP
+   ========================================================= */
+
+.app {
+    display: grid;
+
+    grid-template-columns: 250px minmax(0, 1fr);
+
+    width: 100%;
+    height: 100vh;
+
+    overflow: hidden;
+
+    background: #f6f7f9;
+}
+
+
+/* =========================================================
+   SIDEBAR
+   ========================================================= */
+
+.sidebar {
+    display: flex;
+
+    flex-direction: column;
+
+    height: 100vh;
+
+    padding: 22px 14px 16px;
+
+    background: #fbfcfd;
+
+    border-right: 1px solid #e6e8eb;
+}
+
+
+.brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding: 0 10px 23px;
+}
+
+
+.brand-mark {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #6877e8,
+            #5666d8
+        );
+
+    color: white;
+
+    box-shadow:
+        0 5px 15px rgba(86, 102, 216, .22);
+}
+
+
+.brand-title {
+    font-size: 19px;
+
+    font-weight: 700;
+
+    letter-spacing: -.4px;
+}
+
+.brand-title span {
+    color: #6877e8;
+}
+
+
+.icon {
+    width: 19px;
+    height: 19px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.icon-sm {
+    width: 17px;
+    height: 17px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.8;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.icon-lg {
+    width: 27px;
+    height: 27px;
+
+    fill: none;
+
+    stroke: currentColor;
+
+    stroke-width: 1.6;
+
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+/* Compose */
+
+.compose {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    padding: 12px 16px;
+
+    margin-bottom: 23px;
+
+    border: 0;
+
+    border-radius: 10px;
+
+    color: white;
+
+    background: #6877e8;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 5px 15px rgba(104, 119, 232, .18);
+
+    transition:
+        transform .15s ease,
+        background .15s ease;
+}
+
+.compose:hover {
+    background: #5d6ce0;
+
+    transform: translateY(-1px);
+}
+
+
+/* Sidebar heading */
+
+.sidebar-heading {
+    padding: 0 11px;
+
+    margin: 7px 0 8px;
+
+    color: #9298a2;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: .1em;
+
+    text-transform: uppercase;
+}
+
+
+/* Nav */
+
+.nav-item {
+    min-height: 41px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 11px;
+
+    margin: 2px 0;
+
+    border-radius: 8px;
+
+    color: #646b75;
+
+    transition:
+        background .15s ease,
+        color .15s ease;
+}
+
+.nav-item:hover {
+    background: #f0f2f6;
+
+    color: #30353d;
+}
+
+.nav-item.active {
+    background: #eceefe;
+
+    color: #5666d8;
+
+    font-weight: 600;
+}
+
+.nav-icon {
+    width: 21px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-name {
+    flex: 1;
+
+    font-size: 13px;
+}
+
+.nav-count {
+    min-width: 20px;
+
+    color: #9298a2;
+
+    font-size: 11px;
+
+    text-align: right;
+}
+
+.nav-item.active .nav-count {
+    color: #6877e8;
+}
+
+
+.sidebar-spacer {
+    flex: 1;
+}
+
+
+/* Storage */
+
+.storage {
+    padding: 15px 10px 17px;
+
+    border-top: 1px solid #eceef1;
+}
+
+.storage-line {
+    display: flex;
+
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+
+    color: #858b94;
+
+    font-size: 10px;
+}
+
+.storage-bar {
+    height: 5px;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    background: #e7e9ee;
+}
+
+.storage-progress {
+    width: 38%;
+
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #6877e8;
+}
+
+
+/* Profile */
+
+.profile {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 13px 8px 2px;
+
+    border-top: 1px solid #eceef1;
+}
+
+.profile-avatar,
+.account {
+    width: 34px;
+    height: 34px;
+
+    flex: 0 0 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #fff;
+
+    background: #46505e;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.profile-info {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.profile-info strong {
+    font-size: 12px;
+}
+
+.profile-info span {
+    overflow: hidden;
+
+    color: #8b919a;
+
+    font-size: 10px;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   MAIN
+   ========================================================= */
+
+.main {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    height: 100vh;
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   TOPBAR
+   ========================================================= */
+
+.topbar {
+    height: 67px;
+
+    flex: 0 0 67px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 18px;
+
+    padding: 0 24px;
+
+    background: #fff;
+
+    border-bottom: 1px solid #e7e9ec;
+}
+
+
+.mobile-menu {
+    display: none;
+
+    width: 36px;
+    height: 36px;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    color: #59616c;
+
+    background: transparent;
+}
+
+.mobile-menu:hover {
+    background: #f1f3f5;
+}
+
+
+/* Search */
+
+.search {
+    max-width: 570px;
+
+    flex: 1;
+
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 13px;
+
+    border-radius: 9px;
+
+    background: #f3f5f7;
+
+    color: #8b929c;
+}
+
+.search input {
+    width: 100%;
+
+    border: 0;
+
+    outline: 0;
+
+    background: transparent;
+
+    color: #252a31;
+
+    font-size: 13px;
+}
+
+.search input::placeholder {
+    color: #9aa0a8;
+}
+
+
+/* Header actions */
+
+.header-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin-left: auto;
+}
+
+.header-btn {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    color: #69717c;
+
+    background: transparent;
+}
+
+.header-btn:hover {
+    background: #f1f3f5;
+}
+
+.account {
+    border: 0;
+
+    margin-left: 5px;
+}
+
+
+/* =========================================================
+   CONTENT
+   ========================================================= */
+
+.content {
+    min-height: 0;
+
+    flex: 1;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(300px, 390px)
+        minmax(0, 1fr);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MAIL LIST
+   ========================================================= */
+
+.mail-panel {
+    min-width: 0;
+    min-height: 0; /* IMPORTANT */
+
+    display: flex;
+    flex-direction: column;
+
+    background: #fff;
+
+    border-right: 1px solid #e7e9ec;
+}
+
+
+.list-header {
+    min-height: 74px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 16px 18px;
+
+    border-bottom: 1px solid #eceef1;
+}
+
+.folder-title {
+    font-size: 17px;
+
+    font-weight: 700;
+
+    letter-spacing: -.2px;
+}
+
+.folder-subtitle {
+    margin-top: 3px;
+
+    color: #9298a2;
+
+    font-size: 11px;
+}
+
+
+.list-action {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    color: #727983;
+
+    background: transparent;
+}
+
+.list-action:hover {
+    background: #f1f3f5;
+}
+
+
+/* Email list */
+
+.email-list {
+    min-height: 0;
+
+    flex: 1;
+
+    overflow-y: auto;
+}
+
+.email-list::-webkit-scrollbar {
+    width: 7px;
+}
+
+.email-list::-webkit-scrollbar-thumb {
+    background: #d2d5d9;
+
+    border-radius: 20px;
+}
+
+
+/* Email row */
+
+.email-row {
+    position: relative;
+
+    display: grid;
+
+    grid-template-columns: 34px minmax(0, 1fr) auto;
+
+    gap: 10px;
+
+    padding: 13px 16px;
+
+    border-bottom: 1px solid #f0f1f3;
+
+    cursor: pointer;
+
+    transition:
+        background .12s ease;
+}
+
+.email-row:hover {
+    background: #f8f9fb;
+}
+
+.email-row.unread {
+    background: #fbfbff;
+}
+
+.email-row.selected {
+    background: #eef0ff;
+}
+
+
+.email-avatar {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: #fff;
+
+    background: #6877e8;
+
+    font-size: 10px;
+
+    font-weight: 700;
+}
+
+
+.email-main {
+    min-width: 0;
+}
+
+.email-top {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+}
+
+.email-sender {
+    min-width: 0;
+
+    overflow: hidden;
+
+    color: #30343a;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.unread .email-sender {
+    color: #171a1e;
+
+    font-weight: 700;
+}
+
+.email-subject {
+    overflow: hidden;
+
+    margin-top: 4px;
+
+    color: #454b54;
+
+    font-size: 12px;
+
+    font-weight: 500;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.email-snippet {
+    overflow: hidden;
+
+    margin-top: 4px;
+
+    color: #969ca5;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.email-meta {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 8px;
+
+    color: #969ca5;
+
+    font-size: 9px;
+}
+
+
+.star-button {
+    padding: 0;
+
+    border: 0;
+
+    background: transparent;
+
+    color: #a8adb5;
+}
+
+.star-button.starred {
+    color: #e1aa3e;
+}
+
+
+/* Attachment indicator */
+
+.has-attachment {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    margin-left: 4px;
+
+    color: #8c929b;
+}
+
+
+/* Empty list */
+
+.no-mail {
+    padding: 60px 25px;
+
+    color: #9aa0a8;
+
+    text-align: center;
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MESSAGE
+   ========================================================= */
+
+.message-panel {
+    min-width: 0;
+    min-height: 0;
+
+    background: #fff;
+}
+
+.empty {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    background: #fff;
+}
+
+.empty-icon {
+    width: 64px;
+    height: 64px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 auto 15px;
+
+    border-radius: 18px;
+
+    color: #89919d;
+
+    background: #f2f4f7;
+}
+
+.empty strong {
+    display: block;
+
+    color: #4d535b;
+
+    font-size: 14px;
+}
+
+.empty p {
+    margin: 6px 0 0;
+
+    color: #a0a5ad;
+
+    font-size: 11px;
+}
+
+
+/* Message */
+
+.message {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    background: #fff;
+}
+
+.message.hidden {
+    display: none;
+}
+
+
+.message-toolbar {
+    min-height: 58px;
+
+    flex: 0 0 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 0 18px;
+
+    border-bottom: 1px solid #eceef1;
+}
+
+.toolbar-label {
+    color: #737a84;
+
+    font-size: 12px;
+}
+
+.toolbar-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 3px;
+
+    margin-left: auto;
+}
+
+.tool {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 8px;
+
+    color: #6f7680;
+
+    background: transparent;
+}
+
+.tool:hover {
+    background: #f1f3f5;
+
+    color: #343940;
+}
+
+
+/* Message scroll */
+
+.message-scroll {
+    min-height: 0;
+
+    flex: 1;
+
+    overflow-y: auto;
+
+    padding: 30px 42px 45px;
+}
+
+.message-scroll::-webkit-scrollbar {
+    width: 8px;
+}
+
+.message-scroll::-webkit-scrollbar-thumb {
+    background: #d2d5d9;
+
+    border-radius: 20px;
+}
+
+
+/* Subject */
+
+.subject {
+    margin-bottom: 19px;
+
+    color: #20242a;
+
+    font-size: 23px;
+
+    font-weight: 650;
+
+    letter-spacing: -.5px;
+}
+
+
+/* Sender */
+
+.sender-line {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+
+    padding-bottom: 21px;
+}
+
+.sender-avatar {
+    width: 37px;
+    height: 37px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    color: white;
+
+    background: #6877e8;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+.sender-details {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.sender-details strong {
+    color: #353a42;
+
+    font-size: 12px;
+}
+
+.sender-details span {
+    color: #9298a2;
+
+    font-size: 10px;
+}
+
+.message-date {
+    margin-left: auto;
+
+    color: #969ca5;
+
+    font-size: 10px;
+}
+
+
+/* Labels */
+
+.message-labels {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 5px;
+
+    margin-bottom: 18px;
+}
+
+.message-label {
+    padding: 4px 8px;
+
+    border-radius: 5px;
+
+    color: #6570d8;
+
+    background: #eef0ff;
+
+    font-size: 9px;
+
+    font-weight: 600;
+}
+
+
+/* Message body */
+
+.message-body {
+    color: #4b515a;
+
+    font-size: 13px;
+
+    line-height: 1.75;
+
+    white-space: normal;
+}
+
+.message-body p {
+    margin: 0 0 14px;
+}
+
+.message-body p:last-child {
+    margin-bottom: 0;
+}
+
+
+/* =========================================================
+   ATTACHMENTS
+   ========================================================= */
+
+.attachments {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 9px;
+
+    margin-top: 24px;
+}
+
+.attachment {
+    width: 210px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 11px;
+
+    border: 1px solid #e5e7ea;
+
+    border-radius: 8px;
+
+    background: #fafbfc;
+
+    cursor: pointer;
+
+    transition:
+        background .15s ease,
+        border .15s ease;
+}
+
+.attachment:hover {
+    background: #f3f5f8;
+
+    border-color: #d7dbe1;
+}
+
+.attachment-icon {
+    width: 33px;
+    height: 33px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 7px;
+
+    color: #6877e8;
+
+    background: #eef0ff;
+}
+
+.attachment-info {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+.attachment-name {
+    overflow: hidden;
+
+    color: #41464e;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    text-overflow: ellipsis;
+
+    white-space: nowrap;
+}
+
+.attachment-size {
+    color: #999fa8;
+
+    font-size: 9px;
+}
+
+
+/* Footer */
+
+.message-footer {
+    display: flex;
+
+    gap: 8px;
+
+    margin-top: 30px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid #eceef1;
+}
+
+.reply {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 8px 13px;
+
+    border: 1px solid #e0e3e7;
+
+    border-radius: 7px;
+
+    color: #656c76;
+
+    background: #fff;
+
+    font-size: 11px;
+}
+
+.reply:hover {
+    background: #f5f6f8;
+}
+
+
+/* =========================================================
+   COMPOSE
+   ========================================================= */
+
+.compose-overlay,
+.preview-overlay,
+.original-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: flex-end;
+
+    padding: 22px;
+
+    background: rgba(20, 24, 30, .16);
+}
+
+.compose-overlay.hidden,
+.preview-overlay.hidden,
+.original-overlay.hidden {
+    display: none;
+}
+
+
+/* Compose */
+
+.compose-window {
+    width: 510px;
+
+    max-width: calc(100vw - 30px);
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #fff;
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, .22);
+
+    border: 1px solid #e2e5e9;
+}
+
+.compose-header {
+    height: 51px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 16px;
+
+    color: #fff;
+
+    background: #3f4650;
+
+    font-size: 12px;
+}
+
+.compose-head-actions button {
+    width: 28px;
+    height: 28px;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 6px;
+
+    color: #dfe3e8;
+
+    background: transparent;
+
+    font-size: 22px;
+}
+
+.compose-head-actions button:hover {
+    background: rgba(255,255,255,.1);
+}
+
+.field {
+    display: grid;
+
+    grid-template-columns: 65px minmax(0,1fr);
+
+    align-items: center;
+
+    padding: 0 16px;
+
+    border-bottom: 1px solid #eceef1;
+}
+
+.field label {
+    color: #8a9098;
+
+    font-size: 10px;
+}
+
+.field input {
+    width: 100%;
+
+    height: 43px;
+
+    border: 0;
+
+    outline: 0;
+
+    color: #343940;
+
+    background: transparent;
+
+    font-size: 12px;
+}
+
+.compose-textarea {
+    width: 100%;
+
+    height: 270px;
+
+    resize: vertical;
+
+    padding: 17px;
+
+    border: 0;
+
+    outline: 0;
+
+    color: #343940;
+
+    background: #fff;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+.compose-footer {
+    min-height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 9px 12px;
+
+    border-top: 1px solid #eceef1;
+}
+
+.send {
+    padding: 8px 18px;
+
+    margin-right: 6px;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    color: #fff;
+
+    background: #6877e8;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+.send:hover {
+    background: #5d6ce0;
+}
+
+.compose-tool,
+.discard {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+
+    border-radius: 7px;
+
+    color: #777e87;
+
+    background: transparent;
+}
+
+.compose-tool:hover,
+.discard:hover {
+    background: #f1f3f5;
+}
+
+.discard {
+    margin-left: auto;
+}
+
+
+/* =========================================================
+   PREVIEW
+   ========================================================= */
+
+.preview-overlay,
+.original-overlay {
+    align-items: center;
+
+    justify-content: center;
+
+    background: rgba(20, 24, 30, .48);
+
+    backdrop-filter: blur(3px);
+}
+
+.preview-window {
+    width: min(900px, 92vw);
+
+    height: min(700px, 88vh);
+
+    display: flex;
+
+    flex-direction: column;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #fff;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.25);
+}
+
+.preview-header {
+    flex: 0 0 56px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 17px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    font-size: 13px;
+}
+
+.preview-close {
+    width: 34px;
+    height: 34px;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    color: #69717c;
+
+    background: transparent;
+
+    font-size: 24px;
+}
+
+.preview-close:hover {
+    background: #f1f3f4;
+}
+
+.preview-content {
+    min-height: 0;
+
+    flex: 1;
+
+    overflow: auto;
+
+    padding: 20px;
+
+    background: #f7f8fa;
+}
+
+.preview-content img {
+    display: block;
+
+    max-width: 100%;
+    max-height: 100%;
+
+    margin: auto;
+
+    object-fit: contain;
+}
+
+.preview-text {
+    white-space: pre-wrap;
+
+    color: #3f444b;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 12px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ORIGINAL MESSAGE
+   ========================================================= */
+
+.original-overlay {
+    z-index: 2000;
+}
+
+.original-window {
+    width: min(950px, 100%);
+
+    height: 88vh;
+
+    max-height: 88vh;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-height: 0;
+
+    overflow: hidden;
+
+    border-radius: 12px;
+
+    background: #fff;
+
+    border: 1px solid rgba(0,0,0,.08);
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,.25);
+}
+
+
+/* Original header */
+
+.original-header {
+    flex: 0 0 58px;
+
+    height: 58px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 16px 0 20px;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    background: #fff;
+}
+
+.original-header strong {
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+.original-close {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 0;
+
+    border-radius: 50%;
+
+    color: #5f6368;
+
+    background: transparent;
+
+    font-size: 25px;
+
+    font-weight: 300;
+}
+
+.original-close:hover {
+    background: #f1f3f4;
+
+    color: #202124;
+}
+
+
+/* This is the IMPORTANT part */
+
+.original-body {
+    min-height: 0;
+
+    flex: 1 1 auto;
+
+    height: 100%;
+
+    overflow-y: auto;
+
+    overflow-x: hidden;
+
+    padding: 20px 24px 32px;
+
+    background: #f8f9fa;
+
+    scrollbar-width: thin;
+
+    scrollbar-color:
+        #b9bec5
+        transparent;
+}
+
+.original-body::-webkit-scrollbar {
+    width: 9px;
+}
+
+.original-body::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.original-body::-webkit-scrollbar-thumb {
+    background: #c4c7c5;
+
+    border-radius: 20px;
+}
+
+.original-body::-webkit-scrollbar-thumb:hover {
+    background: #9aa0a6;
+}
+
+
+/* Header information */
+
+.headers {
+    width: 100%;
+
+    padding: 16px 18px;
+
+    margin-bottom: 18px;
+
+    border: 1px solid #e1e5e9;
+
+    border-radius: 8px;
+
+    background: #fff;
+
+    color: #3c4043;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        Menlo,
+        monospace;
+
+    font-size: 12px;
+
+    line-height: 1.65;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+}
+
+
+/* Raw label */
+
+.raw-label {
+    margin: 0 0 8px 2px;
+
+    color: #80868b;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    letter-spacing: .07em;
+
+    text-transform: uppercase;
+}
+
+
+/* Raw email */
+
+.raw {
+    width: 100%;
+
+    padding: 18px;
+
+    border: 1px solid #e1e5e9;
+
+    border-radius: 8px;
+
+    background: #fff;
+
+    color: #202124;
+
+    font-family:
+        "SFMono-Regular",
+        Consolas,
+        "Liberation Mono",
+        Menlo,
+        monospace;
+
+    font-size: 12px;
+
+    line-height: 1.65;
+
+    white-space: pre-wrap;
+
+    overflow-wrap: anywhere;
+
+    word-break: break-word;
+
+    tab-size: 4;
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+    .app {
+        grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+        position: fixed;
+
+        z-index: 500;
+
+        top: 0;
+        bottom: 0;
+        left: 0;
+
+        width: 250px;
+
+        transform: translateX(-100%);
+
+        transition:
+            transform .2s ease;
+
+        box-shadow:
+            10px 0 30px rgba(0,0,0,.08);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+
+    .mobile-menu {
+        display: flex;
+    }
+
+    .topbar {
+        padding: 0 14px;
+
+        gap: 9px;
+    }
+
+    .content {
+        grid-template-columns: 1fr;
+    }
+
+    .mail-panel {
+        border-right: 0;
+    }
+
+    .message-panel {
+        display: none;
+    }
+
+    .message-panel.mobile-open {
+        display: block;
+
+        position: fixed;
+
+        inset: 67px 0 0;
+
+        z-index: 100;
+
+        background: #fff;
+    }
+
+    .message-scroll {
+        padding: 24px 22px 35px;
+    }
+
+    .header-actions .header-btn:nth-child(2),
+    .header-actions .header-btn:nth-child(3) {
+        display: none;
+    }
+
+    .original-window {
+        width: calc(100vw - 20px);
+
+        height: 94vh;
+
+        max-height: 94vh;
+    }
+
+    .original-body {
+        padding: 14px;
+    }
+}
+
+
+@media (max-width: 520px) {
+
+    .search {
+        max-width: none;
+    }
+
+    .header-actions {
+        display: none;
+    }
+
+    .list-header {
+        padding: 14px;
+    }
+
+    .message-toolbar {
+        padding: 0 10px;
+    }
+
+    .toolbar-actions {
+        gap: 0;
+    }
+
+    .message-scroll {
+        padding: 20px 16px 30px;
+    }
+
+    .subject {
+        font-size: 20px;
+    }
+
+    .message-date {
+        display: none;
+    }
+
+    .compose-window {
+        width: calc(100vw - 20px);
+    }
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="app">
+
+
+<!-- =====================================================
+     SIDEBAR
+     ===================================================== -->
+
+<aside class="sidebar" id="sidebar">
+
+
+    <div class="brand">
+
+        <div class="brand-mark">
+
+            <svg
+                class="icon"
+                viewBox="0 0 24 24"
+            >
+                <path d="M4 6h16v12H4z"/>
+                <path d="m4 7 8 6 8-6"/>
+            </svg>
+
+        </div>
+
+        <div class="brand-title">
+            North<span>Mail</span>
+        </div>
+
+    </div>
+
+
+    <button
+        class="compose"
+        onclick="openCompose()"
+    >
+
+        <svg
+            class="icon"
+            viewBox="0 0 24 24"
+        >
+            <path d="M12 5v14"/>
+            <path d="M5 12h14"/>
+        </svg>
+
+        Compose
+
+    </button>
+
+
+    <div class="sidebar-heading">
+        Mail
+    </div>
+
+
+    <div
+        class="nav-item active"
+        data-folder="inbox"
+        onclick="changeFolder('inbox')"
+    >
+
+        <span class="nav-icon">
+
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M4 5h16v14H4z"/>
+                <path d="M4 7l8 6 8-6"/>
+            </svg>
+
+        </span>
+
+        <span class="nav-name">
+            Inbox
+        </span>
+
+        <span
+            class="nav-count"
+            id="inboxCount"
+        ></span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        data-folder="starred"
+        onclick="changeFolder('starred')"
+    >
+
+        <span class="nav-icon">
+
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9z"/>
+            </svg>
+
+        </span>
+
+        <span class="nav-name">
+            Starred
+        </span>
+
+        <span
+            class="nav-count"
+            id="starredCount"
+        ></span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        data-folder="promotions"
+        onclick="changeFolder('promotions')"
+    >
+
+        <span class="nav-icon">
+
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M4 7h16v13H4z"/>
+                <path d="M4 7l2-3h12l2 3"/>
+                <path d="M8 11h8"/>
+            </svg>
+
+        </span>
+
+        <span class="nav-name">
+            Promotions
+        </span>
+
+        <span
+            class="nav-count"
+            id="promotionCount"
+        ></span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        data-folder="spam"
+        onclick="changeFolder('spam')"
+    >
+
+        <span class="nav-icon">
+
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M12 3 21 19H3z"/>
+                <path d="M12 9v4"/>
+                <path d="M12 16h.01"/>
+            </svg>
+
+        </span>
+
+        <span class="nav-name">
+            Spam
+        </span>
+
+        <span
+            class="nav-count"
+            id="spamCount"
+        ></span>
+
+    </div>
+
+
+    <div
+        class="nav-item"
+        data-folder="bin"
+        onclick="changeFolder('bin')"
+    >
+
+        <span class="nav-icon">
+
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M4 7h16"/>
+                <path d="M9 7V4h6v3"/>
+                <path d="M6 7l1 13h10l1-13"/>
+                <path d="M10 11v5"/>
+                <path d="M14 11v5"/>
+            </svg>
+
+        </span>
+
+        <span class="nav-name">
+            Bin
+        </span>
+
+        <span
+            class="nav-count"
+            id="binCount"
+        ></span>
+
+    </div>
+
+
+    <div class="sidebar-heading">
+        Labels
+    </div>
+
+
+    <div class="nav-item">
+
+        <span class="nav-icon">
+            <span style="color:#6f7ff0">●</span>
+        </span>
+
+        <span class="nav-name">
+            Work
+        </span>
+
+    </div>
+
+
+    <div class="nav-item">
+
+        <span class="nav-icon">
+            <span style="color:#4dbb87">●</span>
+        </span>
+
+        <span class="nav-name">
+            Personal
+        </span>
+
+    </div>
+
+
+    <div class="nav-item">
+
+        <span class="nav-icon">
+            <span style="color:#dca146">●</span>
+        </span>
+
+        <span class="nav-name">
+            Finance
+        </span>
+
+    </div>
+
+
+    <div class="sidebar-spacer"></div>
+
+
+    <div class="storage">
+
+        <div class="storage-line">
+            <span>Storage</span>
+            <span>3.8 GB / 10 GB</span>
+        </div>
+
+        <div class="storage-bar">
+            <div class="storage-progress"></div>
+        </div>
+
+    </div>
+
+
+    <div class="profile">
+
+        <div class="profile-avatar">
+            JD
+        </div>
+
+        <div class="profile-info">
+
+            <strong>
+                John Doe
+            </strong>
+
+            <span>
+                john@example.com
+            </span>
+
+        </div>
+
+    </div>
+
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN
+     ===================================================== -->
+
+<main class="main">
+
+
+    <!-- TOPBAR -->
+
+    <header class="topbar">
+
+        <button
+            class="mobile-menu"
+            onclick="toggleSidebar()"
+        >
+
+            <svg class="icon" viewBox="0 0 24 24">
+                <path d="M4 6h16"/>
+                <path d="M4 12h16"/>
+                <path d="M4 18h16"/>
+            </svg>
+
+        </button>
+
+
+        <div class="search">
+
+            <svg class="icon icon-sm" viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="6"/>
+                <path d="m16 16 4 4"/>
+            </svg>
+
+            <input
+                id="searchInput"
+                placeholder="Search mail"
+                oninput="renderEmails()"
+            >
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <button
+                class="header-btn"
+                onclick="renderEmails()"
+                title="Refresh"
+            >
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M20 11a8 8 0 0 0-14.9-4"/>
+                    <path d="M4 4v5h5"/>
+                    <path d="M4 13a8 8 0 0 0 14.9 4"/>
+                    <path d="M20 20v-5h-5"/>
+                </svg>
+            </button>
+
+
+            <button
+                class="header-btn"
+                title="Help"
+            >
+                <svg class="icon" viewBox="0 0 24 24">
+                    <circle cx="12" cy="12" r="9"/>
+                    <path d="M9.5 9a2.5 2.5 0 1 1 4.2 1.8c-.9.7-1.7 1.2-1.7 2.7"/>
+                    <path d="M12 17h.01"/>
+                </svg>
+            </button>
+
+
+            <button
+                class="header-btn"
+                title="Settings"
+            >
+                <svg class="icon" viewBox="0 0 24 24">
+                    <path d="M12 15.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z"/>
+                    <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-1.7 1.7-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.5v.2h-2.4v-.2a1.7 1.7 0 0 0-1-1.5 1.7 1.7 0 0 0-1.9.3l-.1.1L8 17l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.5-1H6.7v-2.4h.2a1.7 1.7 0 0 0 1.5-1 1.7 1.7 0 0 0-.3-1.9L8 8.6l1.7-1.7.1.1a1.7 1.7 0 0 0 1.9.3 1.7 1.7 0 0 0 1-1.5v-.2h2.4v.2a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.9-.3l.1-.1 1.7 1.7-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1z"/>
+                </svg>
+            </button>
+
+
+            <button class="account">
+                JD
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENT -->
+
+    <div class="content">
+
+
+        <!-- MAIL LIST -->
+
+        <section class="mail-panel">
+
+
+            <div class="list-header">
+
+                <div>
+
+                    <div
+                        class="folder-title"
+                        id="folderTitle"
+                    >
+                        Inbox
+                    </div>
+
+                    <div
+                        class="folder-subtitle"
+                        id="folderSubtitle"
+                    >
+                        Recent messages
+                    </div>
+
+                </div>
+
+
+                <div class="list-actions">
+
+                    <button
+                        class="list-action"
+                        onclick="renderEmails()"
+                        title="Refresh"
+                    >
+
+                        <svg class="icon-sm" viewBox="0 0 24 24">
+                            <path d="M20 11a8 8 0 0 0-14.9-4"/>
+                            <path d="M4 4v5h5"/>
+                            <path d="M4 13a8 8 0 0 0 14.9 4"/>
+                            <path d="M20 20v-5h-5"/>
+                        </svg>
+
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="email-list"
+                id="emailList"
+            ></div>
+
+
+        </section>
+
+
+        <!-- MESSAGE -->
+
+        <section class="message-panel" id="messagePanel">
+
+
+            <div
+                class="empty"
+                id="emptyState"
+            >
+
+                <div>
+
+                    <div class="empty-icon">
+
+                        <svg
+                            class="icon-lg"
+                            viewBox="0 0 24 24"
+                        >
+                            <rect x="3" y="5" width="18" height="14" rx="2"/>
+                            <path d="m4 7 8 6 8-6"/>
+                        </svg>
+
+                    </div>
+
+                    <strong>
+                        Select an email to read
+                    </strong>
+
+                    <p>
+                        Choose a message from your inbox.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="message hidden"
+                id="message"
+            >
+
+
+                <div class="message-toolbar">
+
+                    <button
+                        class="tool back-button"
+                        onclick="closeMessage()"
+                    >
+                        <svg class="icon" viewBox="0 0 24 24">
+                            <path d="m15 18-6-6 6-6"/>
+                        </svg>
+                    </button>
+
+                    <span class="toolbar-label">
+                        Message
+                    </span>
+
+
+                    <div class="toolbar-actions">
+
+                        <button
+                            class="tool"
+                            onclick="archiveCurrent()"
+                            title="Archive"
+                        >
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M4 7h16v13H4z"/>
+                                <path d="M3 4h18v3H3z"/>
+                                <path d="M9 11h6"/>
+                            </svg>
+                        </button>
+
+
+                        <button
+                            class="tool"
+                            onclick="moveToSpam()"
+                            title="Report spam"
+                        >
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M12 3 21 19H3z"/>
+                                <path d="M12 9v4"/>
+                                <path d="M12 16h.01"/>
+                            </svg>
+                        </button>
+
+
+                        <button
+                            class="tool"
+                            onclick="deleteCurrent()"
+                            title="Delete"
+                        >
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="M4 7h16"/>
+                                <path d="M9 7V4h6v3"/>
+                                <path d="M6 7l1 13h10l-1-13"/>
+                            </svg>
+                        </button>
+
+
+                        <button
+                            class="tool"
+                            onclick="showOriginal()"
+                            title="Show original"
+                        >
+                            <svg class="icon" viewBox="0 0 24 24">
+                                <path d="m8 9-4 3 4 3"/>
+                                <path d="m16 9 4 3-4 3"/>
+                                <path d="m14 5-4 14"/>
+                            </svg>
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="message-scroll">
+
+                    <div
+                        class="subject"
+                        id="messageSubject"
+                    ></div>
+
+
+                    <div class="sender-line">
+
+                        <div
+                            class="sender-avatar"
+                            id="messageAvatar"
+                        ></div>
+
+
+                        <div class="sender-details">
+
+                            <strong
+                                id="messageSender"
+                            ></strong>
+
+                            <span
+                                id="messageAddress"
+                            ></span>
+
+                        </div>
+
+
+                        <div
+                            class="message-date"
+                            id="messageDate"
+                        ></div>
+
+                    </div>
+
+
+                    <div
+                        class="message-labels"
+                        id="messageLabels"
+                    ></div>
+
+
+                    <div
+                        class="message-body"
+                        id="messageBody"
+                    ></div>
+
+
+                    <div
+                        class="attachments"
+                        id="attachments"
+                    ></div>
+
+
+                    <div class="message-footer">
+
+                        <button
+                            class="reply"
+                            onclick="replyCurrent()"
+                        >
+
+                            <svg class="icon-sm" viewBox="0 0 24 24">
+                                <path d="m9 14-5-2 5-2"/>
+                                <path d="M4 12h9a7 7 0 0 1 7 7v1"/>
+                            </svg>
+
+                            Reply
+
+                        </button>
+
+
+                        <button
+                            class="reply"
+                            onclick="forwardCurrent()"
+                        >
+
+                            <svg class="icon-sm" viewBox="0 0 24 24">
+                                <path d="m15 17 5-5-5-5"/>
+                                <path d="M4 19v-2a5 5 0 0 1 5-5h11"/>
+                            </svg>
+
+                            Forward
+
+                        </button>
+
+
+                        <button
+                            class="reply"
+                            onclick="showOriginal()"
+                        >
+
+                            <svg class="icon-sm" viewBox="0 0 24 24">
+                                <path d="m8 9-4 3 4 3"/>
+                                <path d="m16 9 4 3-4 3"/>
+                                <path d="m14 5-4 14"/>
+                            </svg>
+
+                            Original
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+    </div>
+
+</main>
+
+</div>
+
+
+<!-- =====================================================
+     COMPOSE MODAL
+     ===================================================== -->
+
+<div
+    class="compose-overlay hidden"
+    id="composeModal"
+>
+
+    <div class="compose-window">
+
+        <div class="compose-header">
+
+            <strong>
+                New message
+            </strong>
+
+            <div class="compose-head-actions">
+
+                <button onclick="closeCompose()">
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <div class="field">
+
+            <label>To</label>
+
+            <input
+                id="composeTo"
+                placeholder="Recipients"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Cc</label>
+
+            <input
+                id="composeCc"
+                placeholder="Optional"
+            >
+
+        </div>
+
+
+        <div class="field">
+
+            <label>Subject</label>
+
+            <input
+                id="composeSubject"
+                placeholder="Subject"
+            >
+
+        </div>
+
+
+        <textarea
+            class="compose-textarea"
+            id="composeBody"
+            placeholder="Write your message..."
+        ></textarea>
+
+
+        <div class="compose-footer">
+
+            <button
+                class="send"
+                onclick="sendEmail()"
+            >
+                Send
+            </button>
+
+
+            <button class="compose-tool">
+                <b>A</b>
+            </button>
+
+
+            <button class="compose-tool">
+
+                <svg class="icon-sm" viewBox="0 0 24 24">
+                    <path d="m21 11-8.5 8.5a5 5 0 0 1-7-7L14 4a3.5 3.5 0 0 1 5 5l-8.5 8.5a2 2 0 0 1-3-3L15 7"/>
+                </svg>
+
+            </button>
+
+
+            <button class="compose-tool">
+
+                <svg class="icon-sm" viewBox="0 0 24 24">
+                    <path d="M10 13a5 5 0 0 0 7.1.1l2-2a5 5 0 0 0-7.1-7.1l-1.1 1"/>
+                    <path d="M14 11a5 5 0 0 0-7.1-.1l-2 2A5 5 0 0 0 12 20l1.1-1"/>
+                </svg>
+
+            </button>
+
+
+            <button
+                class="discard"
+                onclick="closeCompose()"
+            >
+
+                <svg class="icon-sm" viewBox="0 0 24 24">
+                    <path d="M4 7h16"/>
+                    <path d="M9 7V4h6v3"/>
+                    <path d="M6 7l1 13h10l-1-13"/>
+                </svg>
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ATTACHMENT PREVIEW
+     ===================================================== -->
+
+<div
+    class="preview-overlay hidden"
+    id="previewModal"
+>
+
+    <div class="preview-window">
+
+        <div class="preview-header">
+
+            <strong id="previewTitle">
+                Attachment
+            </strong>
+
+            <button
+                class="preview-close"
+                onclick="closePreview()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div
+            class="preview-content"
+            id="previewContent"
+        ></div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     ORIGINAL MESSAGE
+     ===================================================== -->
+
+<div
+    class="original-overlay hidden"
+    id="originalModal"
+>
+
+    <div class="original-window">
+
+        <div class="original-header">
+
+            <strong>
+                Original message
+            </strong>
+
+            <button
+                class="original-close"
+                onclick="closeOriginal()"
+            >
+                ×
+            </button>
+
+        </div>
+
+
+        <div class="original-body">
+
+            <div
+                class="headers"
+                id="headers"
+            ></div>
+
+
+            <div class="raw-label">
+                Raw message
+            </div>
+
+
+            <div
+                class="raw"
+                id="raw"
+            ></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* =========================================================
+   STATE
+   ========================================================= */
+
+let currentFolder = "inbox";
+
+let currentMail = null;
+
+
+/* =========================================================
+   HELPERS
+   ========================================================= */
+
+function escapeHTML(value) {
+
+    return String(value ?? "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+
+function initials(name) {
+
+    return String(name || "User")
+        .split(" ")
+        .filter(Boolean)
+        .slice(0, 2)
+        .map(part => part[0])
+        .join("")
+        .toUpperCase();
+}
+
+
+function formatBody(text) {
+
+    return String(text || "")
+        .split(/\n\s*\n/)
+        .map(paragraph => {
+
+            return `<p>${escapeHTML(paragraph).replace(/\n/g, "<br>")}</p>`;
+
+        })
+        .join("");
+}
+
+
+function formatDate(date) {
+
+    const d = new Date(date);
+
+    if (Number.isNaN(d.getTime())) {
+        return date;
+    }
+
+    return d.toLocaleDateString(
+        "en-IN",
+        {
+            day: "2-digit",
+            month: "short"
+        }
+    );
+}
+
+
+/* =========================================================
+   DUMMY EMAIL DATA
+   ========================================================= */
+
+const emails = [
+
+{
+    id: 1,
+    folder: "inbox",
+    sender: "Sarah Mitchell",
+    email: "sarah.mitchell@northstar.io",
+    subject: "Q3 product planning",
+    date: "2026-08-08T09:42:00",
+    body:
+`Hi John,
+
+I’ve attached the latest product planning document for Q3.
+
+Could you review the priorities before our planning session this afternoon?
+
+Thanks,
+Sarah`,
+    labels: ["Work"],
+    unread: true,
+    starred: true,
+    attachment: {
+        name: "Q3-product-plan.pdf",
+        size: "1.8 MB",
+        type: "pdf"
+    }
+},
+
+{
+    id: 2,
+    folder: "inbox",
+    sender: "Michael Anderson",
+    email: "michael.anderson@example.com",
+    subject: "Project status update",
+    date: "2026-08-08T08:15:00",
+    body:
+`Hello John,
+
+Here is this week's project status update.
+
+Everything is currently on schedule and the remaining development work should be completed by Friday.
+
+Regards,
+Michael`,
+    labels: ["Work"],
+    unread: true
+},
+
+{
+    id: 3,
+    folder: "inbox",
+    sender: "Emma Wilson",
+    email: "emma.wilson@acme.co",
+    subject: "Design review notes",
+    date: "2026-08-07T17:25:00",
+    body:
+`Hi John,
+
+Thanks for joining the design review.
+
+I've included the notes and the decisions we made during the meeting.
+
+Best,
+Emma`,
+    labels: ["Work"],
+    unread: false,
+    starred: true
+},
+
+{
+    id: 4,
+    folder: "inbox",
+    sender: "David Carter",
+    email: "david.carter@example.com",
+    subject: "Lunch tomorrow?",
+    date: "2026-08-07T13:05:00",
+    body:
+`Hey John,
+
+Are you free for lunch tomorrow?
+
+There is a new place near the office that I've been meaning to try.
+
+David`,
+    labels: ["Personal"],
+    unread: false
+},
+
+{
+    id: 5,
+    folder: "inbox",
+    sender: "Olivia Brown",
+    email: "olivia@financehub.com",
+    subject: "Your monthly statement",
+    date: "2026-08-07T10:20:00",
+    body:
+`Hello John,
+
+Your monthly account statement is now available.
+
+Please review the attached document at your convenience.
+
+Finance Team`,
+    labels: ["Finance"],
+    unread: true,
+    attachment: {
+        name: "statement-july.pdf",
+        size: "420 KB",
+        type: "pdf"
+    }
+},
+
+{
+    id: 6,
+    folder: "inbox",
+    sender: "James Wilson",
+    email: "james.wilson@example.com",
+    subject: "Team meeting moved",
+    date: "2026-08-06T16:40:00",
+    body:
+`Hi John,
+
+The team meeting has been moved to 3 PM on Thursday.
+
+Please let me know if that causes any problems.
+
+James`,
+    labels: ["Work"],
+    unread: false
+},
+
+{
+    id: 7,
+    folder: "inbox",
+    sender: "Sophia Taylor",
+    email: "sophia.taylor@example.com",
+    subject: "A few photos from the weekend",
+    date: "2026-08-06T14:22:00",
+    body:
+`Hey!
+
+Sharing a few photos from the weekend.
+
+Hope you like them!
+
+Sophia`,
+    labels: ["Personal"],
+    unread: false,
+    attachment: {
+        name: "weekend-photos.jpg",
+        size: "2.4 MB",
+        type: "image"
+    }
+},
+
+{
+    id: 8,
+    folder: "inbox",
+    sender: "Daniel Martin",
+    email: "daniel.martin@northstar.io",
+    subject: "Server maintenance",
+    date: "2026-08-06T11:10:00",
+    body:
+`Hello,
+
+There will be scheduled server maintenance tonight between 11 PM and 1 AM.
+
+Some internal services may be unavailable during this window.
+
+Daniel`,
+    labels: ["Work"],
+    unread: true
+},
+
+{
+    id: 9,
+    folder: "inbox",
+    sender: "Lucas Moore",
+    email: "lucas.moore@example.com",
+    subject: "Weekend plans",
+    date: "2026-08-05T19:12:00",
+    body:
+`Hey John,
+
+Are we still on for Saturday?
+
+Let me know what time works for you.
+
+Lucas`,
+    labels: ["Personal"],
+    unread: false
+},
+
+{
+    id: 10,
+    folder: "inbox",
+    sender: "Ava Thompson",
+    email: "ava.thompson@example.com",
+    subject: "Updated presentation",
+    date: "2026-08-05T15:48:00",
+    body:
+`Hi John,
+
+I've updated the presentation based on your comments.
+
+The latest version is attached.
+
+Ava`,
+    labels: ["Work"],
+    unread: false,
+    attachment: {
+        name: "presentation-final.pptx",
+        size: "3.1 MB",
+        type: "document"
+    }
+},
+
+{
+    id: 11,
+    folder: "inbox",
+    sender: "Noah Garcia",
+    email: "noah.garcia@example.com",
+    subject: "Quick question",
+    date: "2026-08-05T12:31:00",
+    body:
+`Hi,
+
+Do you have five minutes for a quick call?
+
+Thanks,
+Noah`,
+    labels: ["Work"],
+    unread: false
+},
+
+{
+    id: 12,
+    folder: "inbox",
+    sender: "Mia Davis",
+    email: "stage_1isdone@example.com",
+    subject: "Coffee next week",
+    date: "2026-08-04T17:50:00",
+        messageId: "2f6e616974696b686572652e696e2f495f686176655f666c6167",
+        
+        received:
+`from mail.mia.example.com (mail.mia.example.com [192.0.2.45])
+    by  mia@example.com;
+    meet me there where the new dir takes
+    with ESMTPS id ABC123XYZ;
+    Tue, 04 Aug 2026 17:50:00 +0530`,
+    To:`naitik@digitaldominator.com`,
+
+    body:
+`Hi John,
+
+It was great catching up last week.
+
+Would you like to grab coffee again sometime next week?
+
+Mia`,
+    labels: ["Personal"],
+    unread: false
+},
+
+{
+    id: 13,
+    folder: "inbox",
+    sender: "Ethan Miller",
+    email: "ethan.miller@northstar.io",
+    subject: "New onboarding checklist",
+    date: "2026-08-04T14:08:00",
+    body:
+`Hello John,
+
+The updated onboarding checklist is ready.
+
+I've attached a copy for your reference.
+
+Ethan`,
+    labels: ["Work"],
+    unread: true,
+    attachment: {
+        name: "onboarding-checklist.pdf",
+        size: "680 KB",
+        type: "pdf"
+    }
+},
+
+{
+    id: 14,
+    folder: "inbox",
+    sender: "Isabella Garcia",
+    email: "isabella.garcia@example.com",
+    subject: "Dinner reservation",
+    date: "2026-08-04T11:25:00",
+    body:
+`Hi John,
+
+I've booked the restaurant for Friday evening.
+
+Reservation is at 7:30 PM.
+
+Isabella`,
+    labels: ["Personal"],
+    unread: false
+},
+
+{
+    id: 15,
+    folder: "inbox",
+    sender: "William Moore",
+    email: "william.moore@example.com",
+    subject: "Invoice #NM-2048",
+    date: "2026-08-03T16:02:00",
+    body:
+`Hello John,
+
+Please find the latest invoice attached.
+
+Thank you,
+William`,
+    labels: ["Finance"],
+    unread: true,
+    attachment: {
+        name: "invoice-NM-2048.pdf",
+        size: "310 KB",
+        type: "pdf"
+    }
+},
+
+{
+    id: 16,
+    folder: "inbox",
+    sender: "Charlotte Lewis",
+    email: "charlotte.lewis@example.com",
+    subject: "Vacation ideas",
+    date: "2026-08-03T12:44:00",
+    body:
+`Hey John,
+
+I found a few interesting places for our next trip.
+
+Let's discuss them when you have some time.
+
+Charlotte`,
+    labels: ["Personal"],
+    unread: false
+},
+
+{
+    id: 17,
+    folder: "inbox",
+    sender: "Benjamin Walker",
+    email: "benjamin.walker@example.com",
+    subject: "Repository access",
+    date: "2026-08-02T18:35:00",
+    body:
+`Hi John,
+
+I've enabled the repository access you requested.
+
+You should receive the invitation shortly.
+
+Benjamin`,
+    labels: ["Work"],
+    unread: false
+},
+
+{
+    id: 18,
+    folder: "inbox",
+    sender: "Amelia Hall",
+    email: "amelia.hall@example.com",
+    subject: "Weekly newsletter",
+    date: "2026-08-02T10:14:00",
+    body:
+`Hello John,
+
+Here is this week's newsletter.
+
+We've included several useful updates and resources.
+
+Amelia`,
+    labels: ["Personal"],
+    unread: false
+},
+
+{
+    id: 19,
+    folder: "inbox",
+    sender: "Henry Young",
+    email: "henry.young@example.com",
+    subject: "Release candidate ready",
+    date: "2026-08-01T16:52:00",
+    body:
+`Hi team,
+
+The release candidate is now ready for testing.
+
+Please report any blocking issues before tomorrow morning.
+
+Henry`,
+    labels: ["Work"],
+    unread: true
+},
+
+{
+    id: 20,
+    folder: "inbox",
+    sender: "Harper King",
+    email: "harper.king@example.com",
+    subject: "Office supplies",
+    date: "2026-08-01T11:18:00",
+    body:
+`Hi John,
+
+I've ordered the office supplies we discussed.
+
+They should arrive next week.
+
+Harper`,
+    labels: ["Work"],
+    unread: false
+},
+
+{
+    id: 21,
+    folder: "promotions",
+    sender: "Northstar Store",
+    email: "offers@northstar-store.example",
+    subject: "Summer collection — 30% off",
+    date: "2026-08-01T09:00:00",
+    body:
+`Our summer collection has arrived.
+
+Enjoy 30% off selected items this week.`,
+    labels: ["Promotion"],
+    unread: true
+},
+
+{
+    id: 22,
+    folder: "promotions",
+    sender: "Travel Deals",
+    email: "offers@travel.example",
+    subject: "Weekend escapes from $99",
+    date: "2026-07-31T13:10:00",
+    body:
+`Discover new weekend destinations with special fares available this week.`,
+    labels: ["Promotion"],
+    unread: false
+},
+
+{
+    id: 23,
+    folder: "spam",
+    sender: "Unknown Sender",
+    email: "random@example.invalid",
+    subject: "Congratulations! You won",
+    date: "2026-07-30T08:30:00",
+    body:
+`Congratulations!
+
+You have been selected for a special prize.
+
+Please verify your information.`,
+    labels: ["Spam"],
+    unread: false
+},
+
+{
+    id: 24,
+    folder: "spam",
+    sender: "Online Reward Center",
+    email: "reward@example.invalid",
+    subject: "Your reward is waiting",
+    date: "2026-07-29T14:12:00",
+    body:
+`Your account has been selected for a reward.
+
+Click the link to claim it.`,
+    labels: ["Spam"],
+    unread: false
+},
+
+{
+    id: 25,
+    folder: "bin",
+    sender: "Robert Scott",
+    email: "robert.scott@example.com",
+    subject: "Old project discussion",
+    date: "2026-07-28T12:22:00",
+    body:
+`Hi John,
+
+Just following up on our old project discussion.
+
+Regards,
+Robert`,
+    labels: ["Bin"],
+    unread: false
+}
+
+];
+
+
+/* =========================================================
+   ADD ORIGINAL RAW EMAIL TO EVERY EMAIL
+   ========================================================= */
+
+emails.forEach(mail => {
+
+    mail.original =
+`From: ${mail.sender} <${mail.email}>
+To: ${mail.To || `john@example.com`}
+Date: ${new Date(mail.date).toUTCString()}
+Subject: ${mail.subject}
+Message-ID: ${mail.messageId || `<northmail-${mail.id}-${Date.now()}@northmail.local>`}
+MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
+X-Mailer: NorthMail/1.0
+X-Priority: 3
+Received:${mail.received || `from mail.northmail.local
+    by mx.northmail.local
+    with ESMTP;
+    ${new Date(mail.date).toUTCString()}`}
+
+
+${mail.body}
+
+--
+NorthMail
+This is a simulated original email message.
+`;
+});
+
+
+/* =========================================================
+   FOLDER NAMES
+   ========================================================= */
+
+const folderNames = {
+
+    inbox: "Inbox",
+
+    starred: "Starred",
+
+    promotions: "Promotions",
+
+    spam: "Spam",
+
+    bin: "Bin"
+
+};
+
+
+/* =========================================================
+   CHANGE FOLDER
+   ========================================================= */
+
+function changeFolder(folder) {
+
+    currentFolder = folder;
+
+    closeMessage();
+
+    document
+        .querySelectorAll(".nav-item[data-folder]")
+        .forEach(item => {
+
+            item.classList.toggle(
+                "active",
+                item.dataset.folder === folder
+            );
+
+        });
+
+    const title =
+        document.getElementById("folderTitle");
+
+    const subtitle =
+        document.getElementById("folderSubtitle");
+
+    title.textContent =
+        folderNames[folder] || "Mail";
+
+    subtitle.textContent =
+        folder === "inbox"
+            ? "Recent messages"
+            : `${folderNames[folder]} messages`;
+
+    renderEmails();
+}
+
+
+/* =========================================================
+   GET FOLDER EMAILS
+   ========================================================= */
+
+function getFolderEmails() {
+
+    if (currentFolder === "starred") {
+
+        return emails.filter(
+            mail => mail.starred
+        );
+    }
+
+    return emails.filter(
+        mail => mail.folder === currentFolder
+    );
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+function matchesSearch(mail, query) {
+
+    if (!query) {
+        return true;
+    }
+
+    const haystack = [
+
+        mail.sender,
+
+        mail.email,
+
+        mail.subject,
+
+        mail.body,
+
+        ...(mail.labels || [])
+
+    ]
+        .join(" ")
+        .toLowerCase();
+
+    return haystack.includes(
+        query.toLowerCase()
+    );
+}
+
+
+/* =========================================================
+   RENDER EMAIL LIST
+   ========================================================= */
+
+function renderEmails() {
+
+    const list =
+        document.getElementById("emailList");
+
+    const query =
+        document.getElementById("searchInput")
+            .value
+            .trim();
+
+
+    let visible =
+        getFolderEmails()
+            .filter(mail =>
+                matchesSearch(mail, query)
+            );
+
+
+    if (!visible.length) {
+
+        list.innerHTML = `
+            <div class="no-mail">
+                No messages found.
+            </div>
+        `;
+
+        updateCounts();
+
+        return;
+    }
+
+
+    list.innerHTML =
+        visible.map(mail => {
+
+            const attachment =
+                mail.attachment
+                    ? `
+                        <span class="has-attachment">
+                            📎
+                        </span>
+                    `
+                    : "";
+
+
+            return `
+
+                <div
+                    class="email-row
+                    ${mail.unread ? "unread" : ""}
+                    ${currentMail &&
+                      currentMail.id === mail.id
+                        ? "selected"
+                        : ""}"
+                    onclick="openMail(${mail.id})"
+                >
+
+                    <div
+                        class="email-avatar"
+                    >
+                        ${escapeHTML(
+                            initials(mail.sender)
+                        )}
+                    </div>
+
+
+                    <div class="email-main">
+
+                        <div class="email-top">
+
+                            <span class="email-sender">
+                                ${escapeHTML(
+                                    mail.sender
+                                )}
+                            </span>
+
+                        </div>
+
+
+                        <div class="email-subject">
+
+                            ${escapeHTML(
+                                mail.subject
+                            )}
+
+                            ${attachment}
+
+                        </div>
+
+
+                        <div class="email-snippet">
+
+                            ${escapeHTML(
+                                mail.body
+                                    .replace(/\n/g, " ")
+                            )}
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="email-meta">
+
+                        <button
+                            class="star-button
+                            ${mail.starred ? "starred" : ""}"
+                            onclick="
+                                event.stopPropagation();
+                                toggleStar(${mail.id});
+                            "
+                            title="Star"
+                        >
+                            ${mail.starred ? "★" : "☆"}
+                        </button>
+
+                        <span>
+                            ${formatDate(mail.date)}
+                        </span>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        }).join("");
+
+
+    updateCounts();
+}
+
+
+/* =========================================================
+   COUNTS
+   ========================================================= */
+
+function updateCounts() {
+
+    const count = folder =>
+
+        emails.filter(
+            mail => mail.folder === folder
+        ).length;
+
+
+    document.getElementById(
+        "inboxCount"
+    ).textContent =
+        count("inbox");
+
+
+    document.getElementById(
+        "promotionCount"
+    ).textContent =
+        count("promotions");
+
+
+    document.getElementById(
+        "spamCount"
+    ).textContent =
+        count("spam");
+
+
+    document.getElementById(
+        "binCount"
+    ).textContent =
+        count("bin");
+
+
+    document.getElementById(
+        "starredCount"
+    ).textContent =
+        emails.filter(
+            mail => mail.starred
+        ).length;
+}
+
+
+/* =========================================================
+   STAR
+   ========================================================= */
+
+function toggleStar(id) {
+
+    const mail =
+        emails.find(
+            item => item.id === id
+        );
+
+    if (!mail) {
+        return;
+    }
+
+    mail.starred =
+        !mail.starred;
+
+    renderEmails();
+}
+
+
+/* =========================================================
+   OPEN EMAIL
+   ========================================================= */
+
+function openMail(id) {
+
+    const mail =
+        emails.find(
+            item => item.id === id
+        );
+
+    if (!mail) {
+        return;
+    }
+
+
+    currentMail = mail;
+
+    mail.unread = false;
+
+
+    document.getElementById(
+        "emptyState"
+    ).style.display = "none";
+
+
+    document
+        .getElementById("message")
+        .classList.remove("hidden");
+
+
+    document.getElementById(
+        "messageSubject"
+    ).textContent =
+        mail.subject;
+
+
+    document.getElementById(
+        "messageAvatar"
+    ).textContent =
+        initials(mail.sender);
+
+
+    document.getElementById(
+        "messageSender"
+    ).textContent =
+        mail.sender;
+
+
+    document.getElementById(
+        "messageAddress"
+    ).textContent =
+        mail.email;
+
+
+    document.getElementById(
+        "messageDate"
+    ).textContent =
+        new Date(mail.date)
+            .toLocaleString(
+                "en-IN",
+                {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                }
+            );
+
+
+    document.getElementById(
+        "messageBody"
+    ).innerHTML =
+        formatBody(mail.body);
+
+
+    document.getElementById(
+        "messageLabels"
+    ).innerHTML =
+        (mail.labels || [])
+            .map(label =>
+                `<span class="message-label">
+                    ${escapeHTML(label)}
+                </span>`
+            )
+            .join("");
+
+
+    renderAttachments(mail);
+
+    renderEmails();
+
+
+    document
+        .querySelector(".message-scroll")
+        .scrollTop = 0;
+
+
+    /*
+     * Mobile
+     */
+
+    if (window.innerWidth <= 900) {
+
+        document
+            .getElementById("messagePanel")
+            .classList.add("mobile-open");
+    }
+}
+
+
+/* =========================================================
+   CLOSE MESSAGE
+   ========================================================= */
+
+function closeMessage() {
+
+    currentMail = null;
+
+
+    document
+        .getElementById("message")
+        .classList.add("hidden");
+
+
+    document.getElementById(
+        "emptyState"
+    ).style.display = "flex";
+
+
+    document
+        .getElementById("messagePanel")
+        .classList.remove("mobile-open");
+
+
+    renderEmails();
+}
+
+
+/* =========================================================
+   ATTACHMENTS
+   ========================================================= */
+
+function renderAttachments(mail) {
+
+    const container =
+        document.getElementById(
+            "attachments"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (!mail.attachment) {
+        return;
+    }
+
+
+    const file =
+        mail.attachment;
+
+
+    container.innerHTML = `
+
+        <div
+            class="attachment"
+            onclick="previewAttachment(${mail.id})"
+        >
+
+            <div class="attachment-icon">
+
+                <svg
+                    class="icon-sm"
+                    viewBox="0 0 24 24"
+                >
+                    <path d="M7 3h7l4 4v14H7z"/>
+                    <path d="M14 3v5h5"/>
+                </svg>
+
+            </div>
+
+
+            <div class="attachment-info">
+
+                <div class="attachment-name">
+                    ${escapeHTML(file.name)}
+                </div>
+
+                <div class="attachment-size">
+                    ${escapeHTML(file.size)}
+                </div>
+
+            </div>
+
+        </div>
+
+    `;
+}
+
+
+/* =========================================================
+   ATTACHMENT PREVIEW
+   ========================================================= */
+
+function previewAttachment(id) {
+
+    const mail =
+        emails.find(
+            item => item.id === id
+        );
+
+    if (!mail || !mail.attachment) {
+        return;
+    }
+
+
+    const file =
+        mail.attachment;
+
+
+    document.getElementById(
+        "previewTitle"
+    ).textContent =
+        file.name;
+
+
+    const content =
+        document.getElementById(
+            "previewContent"
+        );
+
+
+    if (file.type === "image") {
+
+        /*
+         * Demo image preview.
+         */
+
+        content.innerHTML = `
+
+            <div
+                style="
+                    width:100%;
+                    height:100%;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    color:#8b919a;
+                    font-size:13px;
+                "
+            >
+                Image preview
+            </div>
+
+        `;
+
+    } else {
+
+        content.innerHTML = `
+
+            <div class="preview-text">
+
+Filename: ${file.name}
+
+Size: ${file.size}
+
+Type: ${file.type}
+
+This is a frontend-only attachment preview.
+
+No actual file is stored in this demo.
+            </div>
+
+        `;
+    }
+
+
+    document
+        .getElementById("previewModal")
+        .classList.remove("hidden");
+
+    document.body.style.overflow = "hidden";
+}
+
+
+function closePreview() {
+
+    document
+        .getElementById("previewModal")
+        .classList.add("hidden");
+
+    document.body.style.overflow = "";
+}
+
+
+/* =========================================================
+   SHOW ORIGINAL
+   ========================================================= */
+
+function showOriginal() {
+
+    if (!currentMail) {
+
+        console.warn(
+            "No email is currently selected."
+        );
+
+        return;
+    }
+
+
+    const modal =
+        document.getElementById(
+            "originalModal"
+        );
+
+    const headers =
+        document.getElementById(
+            "headers"
+        );
+
+    const raw =
+        document.getElementById(
+            "raw"
+        );
+
+
+    if (!modal || !headers || !raw) {
+
+        console.error(
+            "Original message elements are missing."
+        );
+
+        return;
+    }
+
+
+    const original =
+        currentMail.original || "";
+
+
+    headers.textContent = "";
+
+    raw.textContent = "";
+
+
+    /*
+     * Separate headers and body.
+     */
+
+    const separator =
+        original.match(
+            /\r?\n\r?\n/
+        );
+
+
+    if (separator) {
+
+        const separatorIndex =
+            separator.index;
+
+
+        headers.textContent =
+            original.substring(
+                0,
+                separatorIndex
+            );
+
+
+        raw.textContent =
+            original.substring(
+                separatorIndex +
+                separator[0].length
+            );
+
+    } else {
+
+        headers.textContent =
+            "No separate header section found.";
+
+        raw.textContent =
+            original;
+    }
+
+
+    /*
+     * Open modal.
+     */
+
+    modal.classList.remove(
+        "hidden"
+    );
+
+
+    /*
+     * IMPORTANT:
+     * reset the scroll position every time
+     * another original message is opened.
+     */
+
+    const body =
+        modal.querySelector(
+            ".original-body"
+        );
+
+
+    if (body) {
+
+        body.scrollTop = 0;
+    }
+
+
+    document.body.style.overflow =
+        "hidden";
+}
+
+
+/* =========================================================
+   CLOSE ORIGINAL
+   ========================================================= */
+
+function closeOriginal() {
+
+    document
+        .getElementById(
+            "originalModal"
+        )
+        .classList.add("hidden");
+
+
+    document.body.style.overflow =
+        "";
+}
+
+
+/* =========================================================
+   ARCHIVE
+   ========================================================= */
+
+function archiveCurrent() {
+
+    if (!currentMail) {
+        return;
+    }
+
+
+    currentMail.folder =
+        "bin";
+
+
+    closeMessage();
+}
+
+
+/* =========================================================
+   MOVE TO SPAM
+   ========================================================= */
+
+function moveToSpam() {
+
+    if (!currentMail) {
+        return;
+    }
+
+
+    currentMail.folder =
+        "spam";
+
+
+    closeMessage();
+}
+
+
+/* =========================================================
+   DELETE
+   ========================================================= */
+
+function deleteCurrent() {
+
+    if (!currentMail) {
+        return;
+    }
+
+
+    currentMail.folder =
+        "bin";
+
+
+    closeMessage();
+}
+
+
+/* =========================================================
+   COMPOSE
+   ========================================================= */
+
+function openCompose() {
+
+    document
+        .getElementById(
+            "composeModal"
+        )
+        .classList.remove("hidden");
+
+    document.body.style.overflow =
+        "hidden";
+
+
+    setTimeout(() => {
+
+        document
+            .getElementById("composeTo")
+            .focus();
+
+    }, 50);
+}
+
+
+function closeCompose() {
+
+    document
+        .getElementById(
+            "composeModal"
+        )
+        .classList.add("hidden");
+
+
+    document.body.style.overflow =
+        "";
+}
+
+
+function sendEmail() {
+
+    const to =
+        document
+            .getElementById("composeTo")
+            .value
+            .trim();
+
+    const subject =
+        document
+            .getElementById("composeSubject")
+            .value
+            .trim();
+
+    const body =
+        document
+            .getElementById("composeBody")
+            .value
+            .trim();
+
+
+    if (!to) {
+
+        alert(
+            "Please enter a recipient."
+        );
+
+        return;
+    }
+
+
+    if (!subject) {
+
+        alert(
+            "Please enter a subject."
+        );
+
+        return;
+    }
+
+
+    /*
+     * Frontend-only demo.
+     */
+
+    alert(
+        "Email sent successfully."
+    );
+
+
+    document
+        .getElementById("composeTo")
+        .value = "";
+
+    document
+        .getElementById("composeCc")
+        .value = "";
+
+    document
+        .getElementById("composeSubject")
+        .value = "";
+
+    document
+        .getElementById("composeBody")
+        .value = "";
+
+
+    closeCompose();
+}
+
+
+/* =========================================================
+   REPLY
+   ========================================================= */
+
+function replyCurrent() {
+
+    if (!currentMail) {
+        return;
+    }
+
+
+    openCompose();
+
+
+    document.getElementById(
+        "composeTo"
+    ).value =
+        currentMail.email;
+
+
+    document.getElementById(
+        "composeSubject"
+    ).value =
+        currentMail.subject
+            .startsWith("Re:")
+                ? currentMail.subject
+                : `Re: ${currentMail.subject}`;
+}
+
+
+/* =========================================================
+   FORWARD
+   ========================================================= */
+
+function forwardCurrent() {
+
+    if (!currentMail) {
+        return;
+    }
+
+
+    openCompose();
+
+
+    document.getElementById(
+        "composeSubject"
+    ).value =
+        currentMail.subject
+            .startsWith("Fwd:")
+                ? currentMail.subject
+                : `Fwd: ${currentMail.subject}`;
+
+
+    document.getElementById(
+        "composeBody"
+    ).value =
+        `
+
+---------- Forwarded message ----------
+
+From: ${currentMail.sender}
+Email: ${currentMail.email}
+Subject: ${currentMail.subject}
+
+${currentMail.body}
+`;
+}
+
+
+/* =========================================================
+   MOBILE SIDEBAR
+   ========================================================= */
+
+function toggleSidebar() {
+
+    document
+        .getElementById("sidebar")
+        .classList.toggle("open");
+}
+
+
+/* =========================================================
+   CLOSE MODALS WITH ESC
+   ========================================================= */
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if (event.key !== "Escape") {
+            return;
+        }
+
+
+        closeCompose();
+
+        closePreview();
+
+        closeOriginal();
+    }
+);
+
+
+/* =========================================================
+   INITIAL RENDER
+   ========================================================= */
+
+renderEmails();
+
+updateCounts();
+
+</script>
+
+</body>
+</html>7B47726561745F42756464795F466C6167315F666F756E647D
